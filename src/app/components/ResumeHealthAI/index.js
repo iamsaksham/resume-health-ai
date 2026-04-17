@@ -154,8 +154,9 @@ export default function ResumeHealthAI() {
             />
           </div>
           <div className={styles.titleBlock}>
-            <p className={styles.title}>
-              Resume Health AI, Validated by AI. Structured with precision
+            <h1 className={styles.mainHeading}>Resume Health AI</h1>
+            <p className={styles.subHeading}>
+              🤖 Validated by AI. ✨ Structured with precision
             </p>
           </div>
           <div className={styles.profileWrap}>
@@ -243,37 +244,14 @@ export default function ResumeHealthAI() {
         </div>
       </main>
 
-      <footer className={styles.footer}>
-        <div className={styles.footerInner}>
-          <article className={styles.featureCard}>
-            <h2 className={styles.featureHeading}>AI validation</h2>
-            <p className={styles.featureDesc}>
-              Your resume is checked against hiring signals and role-relevant language so you know
-              what reads strong—and what still needs work.
-            </p>
-          </article>
-          <article className={styles.featureCard}>
-            <h2 className={styles.featureHeading}>Structured feedback</h2>
-            <p className={styles.featureDesc}>
-              Clear, section-by-section guidance keeps improvements organized instead of a vague wall
-              of suggestions.
-            </p>
-          </article>
-          <article className={styles.featureCard}>
-            <h2 className={styles.featureHeading}>ATS-aware layout</h2>
-            <p className={styles.featureDesc}>
-              Spot formatting and keyword gaps that often cause automated screeners to miss your
-              experience.
-            </p>
-          </article>
-          <article className={styles.featureCard}>
-            <h2 className={styles.featureHeading}>Privacy-minded flow</h2>
-            <p className={styles.featureDesc}>
-              Built for a simple upload-and-review experience, with your file treated as the core
-              input—not a data grab.
-            </p>
-          </article>
-        </div>
+      <footer className={styles.attribution}>
+        <p className={styles.attributionText}>
+          Made with{" "}
+          <span className={styles.heart} aria-label="love">
+            ❤️
+          </span>{" "}
+          by iamsaksham
+        </p>
       </footer>
     </div>
   );

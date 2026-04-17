@@ -2,6 +2,7 @@
   display: flex;
   flex-direction: column;
   min-height: 100vh;
+  min-height: 100dvh;
   position: relative;
   isolation: isolate;
 }
@@ -45,15 +46,28 @@
   text-align: center;
   justify-self: center;
   max-width: 38rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
 }
 
-.title {
-  font-size: clamp(0.95rem, 2vw, 1.125rem);
-  font-weight: 600;
-  line-height: 1.4;
-  letter-spacing: -0.02em;
+.mainHeading {
+  margin: 0;
+  font-size: clamp(1.25rem, 3.2vw, 1.75rem);
+  font-weight: 700;
+  line-height: 1.2;
+  letter-spacing: -0.03em;
   color: var(--text-primary);
   text-shadow: 0 0 28px rgba(255, 77, 166, 0.15);
+}
+
+.subHeading {
+  margin: 0;
+  font-size: clamp(0.85rem, 2vw, 1rem);
+  font-weight: 500;
+  line-height: 1.45;
+  letter-spacing: -0.01em;
+  color: var(--text-muted);
 }
 
 .profileWrap {
@@ -151,9 +165,11 @@
 
 .main {
   flex: 1;
+  min-height: 0;
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: center;
   padding: 2.5rem 1.25rem 3rem;
   position: relative;
 }
@@ -162,14 +178,25 @@
   width: 60%;
   max-width: 720px;
   min-width: min(100%, 280px);
+  flex: 1;
+  min-height: 0;
   display: flex;
   flex-direction: column;
   align-items: stretch;
+  justify-content: center;
   gap: 1.25rem;
 }
 
 .dropzone {
   position: relative;
+  height: 40%;
+  min-height: 11rem;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
   border: 1px dashed color-mix(in srgb, var(--magenta-glow) 45%, var(--glass-border));
   border-radius: 1rem;
   padding: 2.5rem 1.5rem;
@@ -431,9 +458,11 @@
   transform: translateY(0);
 }
 
-.footer {
+.attribution {
   flex-shrink: 0;
   border-top: 1px solid var(--glass-border);
+  padding: 1rem 1.25rem 1.25rem;
+  text-align: center;
   background: linear-gradient(
     0deg,
     color-mix(in srgb, var(--deep-space) 88%, transparent) 0%,
@@ -441,23 +470,19 @@
   );
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
-  padding: 2.5rem 1.25rem 2rem;
-  box-shadow: 0 -8px 32px rgba(0, 0, 0, 0.2);
 }
 
-.footerInner {
-  max-width: 1100px;
-  margin: 0 auto;
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 1.25rem;
+.attributionText {
+  margin: 0;
+  font-size: 0.875rem;
+  color: var(--text-muted);
+}
+
+.heart {
+  display: inline;
 }
 
 @media (max-width: 900px) {
-  .footerInner {
-    grid-template-columns: repeat(2, 1fr);
-  }
-
   .bodyContent {
     width: 85%;
   }
@@ -482,10 +507,6 @@
     order: 3;
   }
 
-  .footerInner {
-    grid-template-columns: 1fr;
-  }
-
   .bodyContent {
     width: 100%;
   }
@@ -497,64 +518,3 @@
   }
 }
 
-.featureCard {
-  position: relative;
-  padding: 1.35rem 1.25rem 1.25rem;
-  border-radius: 0.85rem;
-  overflow: hidden;
-  border: 1px solid var(--glass-border);
-  background: linear-gradient(
-    150deg,
-    color-mix(in srgb, var(--nebula) 52%, transparent) 0%,
-    color-mix(in srgb, var(--cosmic-blue) 38%, transparent) 55%,
-    color-mix(in srgb, var(--deep-space) 25%, transparent) 100%
-  );
-  backdrop-filter: blur(18px);
-  -webkit-backdrop-filter: blur(18px);
-  box-shadow:
-    0 8px 32px rgba(0, 0, 0, 0.35),
-    inset 0 1px 0 var(--glass-shine),
-    0 0 0 1px rgba(196, 62, 255, 0.05);
-  transition:
-    border-color 0.25s ease,
-    box-shadow 0.25s ease,
-    transform 0.25s ease;
-}
-
-.featureCard::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 3px;
-  border-radius: 0.85rem 0.85rem 0 0;
-  background: linear-gradient(90deg, var(--magenta-glow), var(--star-pink), var(--cosmic-blue));
-  opacity: 0.85;
-}
-
-.featureCard:hover {
-  transform: translateY(-3px);
-  border-color: color-mix(in srgb, var(--magenta-glow) 35%, var(--glass-border-strong));
-  box-shadow:
-    0 16px 48px rgba(0, 0, 0, 0.42),
-    inset 0 1px 0 var(--glass-shine),
-    0 0 28px rgba(196, 62, 255, 0.22),
-    0 0 48px rgba(255, 77, 166, 0.1);
-}
-
-.featureHeading {
-  font-size: 1rem;
-  font-weight: 600;
-  margin-bottom: 0.55rem;
-  letter-spacing: -0.01em;
-  color: var(--text-primary);
-  position: relative;
-}
-
-.featureDesc {
-  font-size: 0.875rem;
-  line-height: 1.55;
-  color: var(--text-muted);
-  position: relative;
-}
