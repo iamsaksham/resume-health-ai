@@ -1,0 +1,81 @@
+/**
+ * Cosmic theme — color tokens (CSS custom properties).
+ * Import at app root via globals.css.
+ */
+
+:root {
+  /* ─── Primitive palette ─── */
+  --palette-deep-space: #1a0b2e;
+  --palette-nebula: #3b1e5a;
+  --palette-cosmic-blue: #1f3c88;
+  --palette-magenta-glow: #c43eff;
+  --palette-star-pink: #ff4da6;
+  --palette-text-primary: #ede4f7;
+  --palette-pure-white: #ffffff;
+
+  /* ─── Semantic — brand & surfaces (maps to primitives) ─── */
+  --color-bg-base: var(--palette-deep-space);
+  --color-bg-elevated: var(--palette-nebula);
+  --color-accent-blue: var(--palette-cosmic-blue);
+  --color-accent-magenta: var(--palette-magenta-glow);
+  --color-accent-pink: var(--palette-star-pink);
+
+  /* Legacy / short aliases — used across component CSS */
+  --deep-space: var(--palette-deep-space);
+  --nebula: var(--palette-nebula);
+  --cosmic-blue: var(--palette-cosmic-blue);
+  --magenta-glow: var(--palette-magenta-glow);
+  --star-pink: var(--palette-star-pink);
+
+  /* ─── Typography ─── */
+  --text-primary: var(--palette-text-primary);
+  --text-muted: rgba(237, 228, 247, 0.72);
+
+  /* ─── Glass surfaces ─── */
+  --glass-border: rgba(255, 255, 255, 0.14);
+  --glass-border-strong: rgba(255, 255, 255, 0.22);
+  --glass-shine: rgba(255, 255, 255, 0.08);
+  --glass-bg: rgba(59, 30, 90, 0.35);
+
+  /* ─── Alpha / effects (derived for shadows & glows) ─── */
+  --alpha-black-20: color-mix(in srgb, #000000 20%, transparent);
+  --alpha-black-25: color-mix(in srgb, #000000 25%, transparent);
+  --alpha-black-35: color-mix(in srgb, #000000 35%, transparent);
+  --alpha-black-40: color-mix(in srgb, #000000 40%, transparent);
+  --alpha-black-42: color-mix(in srgb, #000000 42%, transparent);
+  --alpha-black-45: color-mix(in srgb, #000000 45%, transparent);
+
+  --alpha-white-20: color-mix(in srgb, var(--palette-pure-white) 20%, transparent);
+  --alpha-white-25: color-mix(in srgb, var(--palette-pure-white) 25%, transparent);
+
+  --alpha-magenta-05: color-mix(in srgb, var(--palette-magenta-glow) 5%, transparent);
+  --alpha-magenta-08: color-mix(in srgb, var(--palette-magenta-glow) 8%, transparent);
+  --alpha-magenta-14: color-mix(in srgb, var(--palette-magenta-glow) 14%, transparent);
+  --alpha-magenta-22: color-mix(in srgb, var(--palette-magenta-glow) 22%, transparent);
+  --alpha-magenta-25: color-mix(in srgb, var(--palette-magenta-glow) 25%, transparent);
+  --alpha-magenta-35: color-mix(in srgb, var(--palette-magenta-glow) 35%, transparent);
+  --alpha-magenta-40: color-mix(in srgb, var(--palette-magenta-glow) 40%, transparent);
+  --alpha-magenta-55: color-mix(in srgb, var(--palette-magenta-glow) 55%, transparent);
+
+  --alpha-pink-10: color-mix(in srgb, var(--palette-star-pink) 10%, transparent);
+  --alpha-pink-12: color-mix(in srgb, var(--palette-star-pink) 12%, transparent);
+  --alpha-pink-15: color-mix(in srgb, var(--palette-star-pink) 15%, transparent);
+  --alpha-pink-18: color-mix(in srgb, var(--palette-star-pink) 18%, transparent);
+  --alpha-pink-20: color-mix(in srgb, var(--palette-star-pink) 20%, transparent);
+  --alpha-pink-35: color-mix(in srgb, var(--palette-star-pink) 35%, transparent);
+  --alpha-pink-45: color-mix(in srgb, var(--palette-star-pink) 45%, transparent);
+
+  --alpha-cosmic-blue-12: color-mix(in srgb, var(--palette-cosmic-blue) 12%, transparent);
+  --alpha-cosmic-blue-20: color-mix(in srgb, var(--palette-cosmic-blue) 20%, transparent);
+  --alpha-cosmic-blue-45: color-mix(in srgb, var(--palette-cosmic-blue) 45%, transparent);
+
+  /* Page ambient gradients (body) */
+  --gradient-ambient-top: var(--alpha-cosmic-blue-45);
+  --gradient-ambient-tr: var(--alpha-magenta-14);
+  --gradient-ambient-bl: color-mix(in srgb, var(--palette-star-pink) 10%, transparent);
+  --gradient-ambient-br: var(--alpha-cosmic-blue-20);
+
+  /* Layout */
+  --background: var(--palette-deep-space);
+  --foreground: var(--palette-text-primary);
+}
