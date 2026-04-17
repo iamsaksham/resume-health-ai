@@ -145,12 +145,12 @@ export default function ResumeHealthAI() {
         <div className={styles.headerInner}>
           <div className={styles.logo}>
             <Image
-              src="/resume-health-ai.png"
+              src="/rhai-logo.png"
               alt="Resume Health AI"
               width={160}
-              height={40}
+              height={80}
               priority
-              style={{ height: 40, width: "auto" }}
+              style={{ height: 80, width: "auto" }}
             />
           </div>
           <div className={styles.titleBlock}>
