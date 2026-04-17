@@ -64,7 +64,9 @@ export default function ResumeHealthAI() {
   const [selectedFile, setSelectedFile] = useState(null);
   const [pdfPreviewUrl, setPdfPreviewUrl] = useState(null);
   const [pickHint, setPickHint] = useState(null);
+  const [uploadInProgress, setUploadInProgress] = useState(false);
   const fileInputRef = useRef(null);
+  const uploadInFlightRef = useRef(false);
 
   useEffect(() => {
     if (!selectedFile || !isPdfFile(selectedFile)) {
@@ -76,6 +78,31 @@ export default function ResumeHealthAI() {
     return () => {
       URL.revokeObjectURL(url);
     };
+  }, [selectedFile]);
+
+  useEffect(() => {
+    if (uploadInProgress) setDragActive(false);
+  }, [uploadInProgress]);
+
+  const handleUploadResume = useCallback(async () => {
+    if (!selectedFile || uploadInFlightRef.current) return;
+    uploadInFlightRef.current = true;
+    setUploadInProgress(true);
+    try {
+      const formData = new FormData();
+      formData.append("file", selectedFile);
+      const response = await fetch("/api/uploadResume", {
+        method: "POST",
+        body: formData,
+      });
+      const resData = await response.json();
+      console.log('--> ', resData);
+    } catch (error) {
+      console.error('--> ', error);
+    } finally {
+      uploadInFlightRef.current = false;
+      setUploadInProgress(false);
+    }
   }, [selectedFile]);
 
   const clearSelectedFile = useCallback(() => {
@@ -112,10 +139,14 @@ export default function ResumeHealthAI() {
     [assignFile],
   );
 
-  const onDragEnter = useCallback((e) => {
-    e.preventDefault();
-    setDragActive(true);
-  }, []);
+  const onDragEnter = useCallback(
+    (e) => {
+      e.preventDefault();
+      if (uploadInProgress) return;
+      setDragActive(true);
+    },
+    [uploadInProgress],
+  );
 
   const onDragLeave = useCallback((e) => {
     e.preventDefault();
@@ -133,10 +164,22 @@ export default function ResumeHealthAI() {
     (e) => {
       e.preventDefault();
       setDragActive(false);
+      if (uploadInProgress) return;
       const file = e.dataTransfer.files?.[0];
       if (file) assignFile(file);
     },
-    [assignFile],
+    [assignFile, uploadInProgress],
+  );
+
+  const onDropzoneClick = useCallback(
+    (e) => {
+      if (uploadInProgress) return;
+      if (e.target.closest("button")) return;
+      if (e.target.closest("label")) return;
+      if (e.target.closest("iframe")) return;
+      openFilePicker();
+    },
+    [openFilePicker, uploadInProgress],
   );
 
   return (
@@ -180,7 +223,8 @@ export default function ResumeHealthAI() {
       <main className={styles.main}>
         <div className={styles.bodyContent}>
           <div
-            className={`${styles.dropzone} ${dragActive ? styles.dropzoneActive : ""}`}
+            className={`${styles.dropzone} ${dragActive ? styles.dropzoneActive : ""} ${uploadInProgress ? styles.dropzoneBusy : ""}`}
+            onClick={onDropzoneClick}
             onDragEnter={onDragEnter}
             onDragLeave={onDragLeave}
             onDragOver={onDragOver}
@@ -214,10 +258,20 @@ export default function ResumeHealthAI() {
                     <p className={styles.filePreviewName}>{selectedFile.name}</p>
                     <p className={styles.filePreviewSize}>{formatFileSize(selectedFile.size)}</p>
                     <div className={styles.filePreviewActions}>
-                      <button type="button" className={styles.filePreviewRemove} onClick={clearSelectedFile}>
+                      <button
+                        type="button"
+                        className={styles.filePreviewRemove}
+                        onClick={clearSelectedFile}
+                        disabled={uploadInProgress}
+                      >
                         Remove
                       </button>
-                      <button type="button" className={styles.filePreviewChange} onClick={openFilePicker}>
+                      <button
+                        type="button"
+                        className={styles.filePreviewChange}
+                        onClick={openFilePicker}
+                        disabled={uploadInProgress}
+                      >
                         Replace
                       </button>
                     </div>
@@ -238,8 +292,21 @@ export default function ResumeHealthAI() {
               </>
             )}
           </div>
-          <button type="button" className={styles.uploadCta}>
-            Upload resume
+          <button
+            type="button"
+            className={`${styles.uploadCta} ${uploadInProgress ? styles.uploadCtaLoading : ""}`}
+            onClick={handleUploadResume}
+            disabled={!selectedFile || uploadInProgress}
+            aria-busy={uploadInProgress}
+          >
+            {uploadInProgress ? (
+              <>
+                <span className={styles.uploadCtaSpinner} aria-hidden />
+                <span>Analyzing resume…</span>
+              </>
+            ) : (
+              "Upload resume"
+            )}
           </button>
         </div>
       </main>

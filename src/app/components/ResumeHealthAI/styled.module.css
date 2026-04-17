@@ -189,7 +189,7 @@
 
 .dropzone {
   position: relative;
-  height: 40%;
+  height: 60%;
   min-height: 11rem;
   flex-shrink: 0;
   display: flex;
@@ -197,6 +197,7 @@
   align-items: center;
   justify-content: center;
   box-sizing: border-box;
+  cursor: pointer;
   border: 1px dashed color-mix(in srgb, var(--magenta-glow) 45%, var(--glass-border));
   border-radius: 1rem;
   padding: 2.5rem 1.5rem;
@@ -233,6 +234,16 @@
     inset 0 1px 0 var(--glass-shine),
     0 0 32px rgba(196, 62, 255, 0.35),
     0 0 56px rgba(255, 77, 166, 0.18);
+}
+
+.dropzoneBusy {
+  cursor: wait;
+  pointer-events: none;
+}
+
+.dropzoneBusy .filePreviewIframe {
+  pointer-events: auto;
+  cursor: auto;
 }
 
 .dropzoneText {
@@ -392,6 +403,17 @@
   color: var(--star-pink);
 }
 
+.filePreviewRemove:disabled,
+.filePreviewChange:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+.filePreviewChange:disabled {
+  text-decoration: none;
+}
+
 @media (max-width: 480px) {
   .filePreview {
     flex-direction: column;
@@ -420,8 +442,48 @@
   border: 0;
 }
 
+@keyframes uploadCtaSpin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes uploadCtaGradientSweep {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+@keyframes uploadCtaGlowPulse {
+  0%,
+  100% {
+    box-shadow:
+      0 4px 22px rgba(196, 62, 255, 0.45),
+      0 0 36px rgba(255, 77, 166, 0.28),
+      inset 0 1px 0 rgba(255, 255, 255, 0.22);
+  }
+  50% {
+    box-shadow:
+      0 6px 32px rgba(196, 62, 255, 0.65),
+      0 0 52px rgba(255, 77, 166, 0.42),
+      inset 0 1px 0 rgba(255, 255, 255, 0.28);
+  }
+}
+
 .uploadCta {
+  position: relative;
   align-self: center;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.65rem;
+  min-height: 2.85rem;
   padding: 0.8rem 2.25rem;
   font-size: 1rem;
   font-weight: 600;
@@ -431,7 +493,7 @@
   border-radius: 0.65rem;
   cursor: pointer;
   background: linear-gradient(120deg, var(--magenta-glow) 0%, var(--cosmic-blue) 48%, var(--star-pink) 100%);
-  background-size: 160% 100%;
+  background-size: 200% 100%;
   background-position: 0% 50%;
   box-shadow:
     0 4px 20px rgba(196, 62, 255, 0.4),
@@ -441,10 +503,11 @@
     transform 0.18s ease,
     box-shadow 0.18s ease,
     background-position 0.35s ease,
-    border-color 0.18s ease;
+    border-color 0.18s ease,
+    opacity 0.2s ease;
 }
 
-.uploadCta:hover {
+.uploadCta:hover:not(:disabled) {
   transform: translateY(-2px);
   background-position: 100% 50%;
   border-color: color-mix(in srgb, var(--star-pink) 55%, transparent);
@@ -454,8 +517,47 @@
     inset 0 1px 0 rgba(255, 255, 255, 0.25);
 }
 
-.uploadCta:active {
+.uploadCta:active:not(:disabled) {
   transform: translateY(0);
+}
+
+.uploadCta:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+  transform: none;
+  box-shadow:
+    0 2px 12px rgba(196, 62, 255, 0.2),
+    inset 0 1px 0 rgba(255, 255, 255, 0.12);
+}
+
+.uploadCta.uploadCtaLoading {
+  opacity: 1;
+  cursor: wait;
+  border-color: color-mix(in srgb, var(--star-pink) 50%, transparent);
+  animation:
+    uploadCtaGradientSweep 2.4s ease-in-out infinite,
+    uploadCtaGlowPulse 1.8s ease-in-out infinite;
+}
+
+.uploadCtaSpinner {
+  display: inline-block;
+  width: 1.05em;
+  height: 1.05em;
+  flex-shrink: 0;
+  border: 2px solid rgba(255, 255, 255, 0.28);
+  border-top-color: #fff;
+  border-radius: 50%;
+  animation: uploadCtaSpin 0.65s linear infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .uploadCta.uploadCtaLoading {
+    animation: none;
+  }
+
+  .uploadCtaSpinner {
+    animation-duration: 1.1s;
+  }
 }
 
 .attribution {
