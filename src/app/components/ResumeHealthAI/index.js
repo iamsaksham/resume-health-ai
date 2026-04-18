@@ -91,7 +91,7 @@ export default function ResumeHealthAI() {
     try {
       const formData = new FormData();
       formData.append("file", selectedFile);
-      const response = await fetch("/api/uploadResume", {
+      const response = await fetch("/api/parsePdfToText", {
         method: "POST",
         body: formData,
       });
