@@ -3,8 +3,6 @@ import { join } from "node:path";
 import { pathToFileURL } from "node:url";
 import { PDFParse } from "pdf-parse";
 
-export const runtime = "nodejs";
-
 // v2 runs pdf.js in a worker; Next’s bundle breaks the default worker path — point at the package on disk.
 PDFParse.setWorker(
   pathToFileURL(
