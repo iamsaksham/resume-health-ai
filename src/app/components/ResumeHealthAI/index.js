@@ -66,7 +66,7 @@ export default function ResumeHealthAI() {
   const [pickHint, setPickHint] = useState(null);
   const [uploadInProgress, setUploadInProgress] = useState(false);
   const fileInputRef = useRef(null);
-  const uploadInFlightRef = useRef(false);
+  const uploadTaskInProgressRef = useRef(false);
 
   useEffect(() => {
     if (!selectedFile || !isPdfFile(selectedFile)) {
@@ -84,9 +84,9 @@ export default function ResumeHealthAI() {
     if (uploadInProgress) setDragActive(false);
   }, [uploadInProgress]);
 
-  const handleUploadResume = useCallback(async () => {
-    if (!selectedFile || uploadInFlightRef.current) return;
-    uploadInFlightRef.current = true;
+  const handlePdfToTextAPI = useCallback(async () => {
+    if (!selectedFile || uploadTaskInProgressRef.current) return;
+    uploadTaskInProgressRef.current = true;
     setUploadInProgress(true);
     try {
       const formData = new FormData();
@@ -96,14 +96,41 @@ export default function ResumeHealthAI() {
         body: formData,
       });
       const resData = await response.json();
-      console.log('--> ', resData);
+      return resData.response;
     } catch (error) {
       console.error('--> ', error);
     } finally {
-      uploadInFlightRef.current = false;
+      uploadTaskInProgressRef.current = false;
       setUploadInProgress(false);
     }
   }, [selectedFile]);
+
+  const handleTextToJsonAI = useCallback(async (pdfText) => {
+    if (!pdfText || uploadTaskInProgressRef.current) return;
+    uploadTaskInProgressRef.current = true;
+    setUploadInProgress(true);
+    try {
+      const response = await fetch("/api/convertTextToJsonAI", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ pdfText }),
+      });
+      const resData = await response.json();
+      return resData.response;
+    } catch (error) {
+      console.error('--> ', error);
+    } finally {
+      uploadTaskInProgressRef.current = false;
+      setUploadInProgress(false);
+    }
+  }, [selectedFile]);
+
+  const handleUploadResume = useCallback(async () => {
+    const pdfText = await handlePdfToTextAPI();
+    console.log('--> ', pdfText);
+    const pdfJson = await handleTextToJsonAI(pdfText);
+    console.log('--> ', pdfJson);
+  }, [handlePdfToTextAPI, handleTextToJsonAI]);
 
   const clearSelectedFile = useCallback(() => {
     setSelectedFile(null);

@@ -16,54 +16,61 @@ export async function POST(req) {
 
     const client = new OpenAI({ apiKey: OPEN_AI_KEY });
 
-    const body = await req.formData();
-    const file = body.get("file");
-    if (!file || typeof file === "string") {
-      return NextResponse.json(
-        {
-          error:
-            "Missing file. POST multipart/form-data with a non-empty `file` field (PDF, DOC, or DOCX).",
-        },
-        { status: 400 }
-      );
-    }
+    const body = await req.json();
+    const { pdfText } = body;
 
-    const fileData = await toFile(file);
-
-    const fileObj = await client.files.create({
-      file: fileData,
-      purpose: "user_data",
-    });
-    // const delimiter = "####";
+    const delimiter = "####";
 
     const prompt = [
       {
         // system message
         role: "developer",
         content: `
-          You will be provided with a pdf or docx or doc file.
-          Your task is to extract the text from the file.
-          Return the text in the following format: <text>...</text>
-          The text should be in the same language as the file.
+          You will be provided with a text which corresponds to a resume.
+          The text is delimited with ${delimiter} characters.
+          Your task is to extract structured resume data in JSON format.
+          Return ONLY valid JSON matching this schema:
+          {
+            name: string,
+            email: string,
+            phone?: string,
+            skills: string[],
+            experience: [
+              {
+                company: string,
+                role: string,
+                startDate: string,
+                endDate?: string,
+                description: string
+              }
+            ],
+            education: [
+              {
+                institution: string,
+                degree: string,
+                year: string
+              }
+            ]
+          }
         `
+      },
+      {
+        role: "user",
+        content: `${delimiter} ${pdfText.text} ${delimiter}`,
       },
       // {
       //   role: "user",
-      //   content: `${delimiter} ${file} ${delimiter}`,
+      //   content: [
+      //       {
+      //           type: "input_text",
+      //           text: "Analyze the document and extract the text from it.",
+      //       },
+      //       {
+      //           type: "input_file",
+      //           text: text,
+      //       },
+      //   ],
       // },
-      {
-        role: "user",
-        content: [
-            {
-                type: "input_text",
-                text: "Analyze the document and extract the text from it.",
-            },
-            {
-                type: "input_file",
-                file_id: fileObj.id,
-            },
-        ],
-    },
     ];
 
     // Here is where we communicate with the OpenAI API to create our chatbot.

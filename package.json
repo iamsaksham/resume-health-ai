@@ -9,7 +9,6 @@
     "lint": "eslint"
   },
   "dependencies": {
-    "fs": "^0.0.1-security",
     "next": "16.2.4",
     "openai": "^6.34.0",
     "pdf-parse": "^2.4.5",
