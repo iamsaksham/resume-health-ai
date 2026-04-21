@@ -14,7 +14,7 @@ export const ResumeSchema = z.object({
       company: z.string(),
       role: z.string(),
       startDate: z.string(),
-      endDate: z.string().optional(),
+      endDate: z.string().nullish(),
       description: z.string()
     })
   ).default([]),

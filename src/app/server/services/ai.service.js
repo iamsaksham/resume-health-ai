@@ -1,6 +1,7 @@
 import OpenAI from "openai";
+import { ResumeSchema } from "@/app/server/validators/resume.schema";
 
-export async function convertTextToJsonAI(pdfText) {
+export async function convertTextToJsonOpenAI(pdfText) {
   try {
     const OPEN_AI_KEY = process.env.OPEN_AI_KEY;
     if (!OPEN_AI_KEY) {
@@ -24,34 +25,21 @@ export async function convertTextToJsonAI(pdfText) {
           You will be provided with a text which corresponds to a resume.
           The text is delimited with ${delimiter} characters.
           Your task is to extract structured resume data in JSON format.
-          Return ONLY valid JSON matching this schema:
-          {
-            name: string,
-            email: string,
-            phone?: string,
-            skills: string[],
-            experience: [
-              {
-                company: string,
-                role: string,
-                startDate: string,
-                endDate?: string,
-                description: string
-              }
-            ],
-            education: [
-              {
-                institution: string,
-                degree: string,
-                year: string
-              }
-            ]
-          }
+          Return ONLY valid JSON that matches the schema below:
+
+          Schema: ${JSON.stringify(ResumeSchema.shape, null, 2)}
+
+          Do NOT include the following in your response:
+          - backticks
+          - markdown
+          - explanation text
+
+          Output must start with { and end with }
         `
       },
       {
         role: "user",
-        content: `${delimiter} ${pdfText.text} ${delimiter}`,
+        content: `Resume text: ${delimiter} ${pdfText.text} ${delimiter}`,
       },
       // {
       //   role: "user",
