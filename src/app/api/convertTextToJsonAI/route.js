@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 
-import { convertTextToJsonOpenAI } from "@/app/server/services/ai.service";
+import { convertTextToJsonOpenAI } from "@/app/server/services/openai.service";
 import { ResumeSchema } from "@/app/server/validators/resume.schema";
 import { cleanLLMOutput } from "@/utils/helper";
 
