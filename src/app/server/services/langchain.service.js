@@ -1,21 +1,10 @@
-import OpenAI from "openai";
+import { createAgent } from "langchain";
+import { ChatOpenAI } from "@langchain/openai";
+
 import { ResumeSchema } from "@/app/server/validators/resume.schema";
 
-export async function convertTextToJsonOpenAI(pdfText) {
+export async function convertTextToJsonLangChainAI(pdfText) {
   try {
-    const OPENAI_API_KEY = process.env.OPENAI_API_KEY;
-    if (!OPENAI_API_KEY) {
-      return NextResponse.json(
-        {
-          error:
-            "Missing OPENAI_API_KEY. Set OPENAI_API_KEY in .env.local at the project root, then restart `next dev`.",
-        },
-        { status: 500 }
-      );
-    }
-
-    const client = new OpenAI({ apiKey: OPENAI_API_KEY });
-
     const delimiter = "####";
     const prompt = [
       {
@@ -41,26 +30,22 @@ export async function convertTextToJsonOpenAI(pdfText) {
         role: "user",
         content: `Resume text: ${delimiter} ${pdfText.text} ${delimiter}`,
       },
-      // {
-      //   role: "user",
-      //   content: [
-      //       {
-      //           type: "input_text",
-      //           text: "Analyze the document and extract the text from it.",
-      //       },
-      //       {
-      //           type: "input_file",
-      //           text: text,
-      //       },
-      //   ],
-      // },
     ];
 
-    const response = await client.responses.create({
+    const model = new ChatOpenAI({
       model: "gpt-4o-mini",
       temperature: 0.7,
-      input: prompt,
     });
+
+    const agent = createAgent({
+      model,
+      responseFormat: ResumeSchema,
+    });
+
+    const response = await agent.invoke({
+      messages: prompt,
+    });
+
     return response;
   } catch (err) {
     return err.message;

@@ -1,30 +1,17 @@
 import { NextResponse } from "next/server";
 
-import { convertTextToJsonOpenAI } from "@/app/server/services/openai.service";
+import { convertTextToJsonLangChainAI } from "@/app/server/services/langchain.service";
 import { ResumeSchema } from "@/app/server/validators/resume.schema";
-import { cleanLLMOutput } from "@/utils/helper";
 
 export async function POST(req) {
   try {
     const body = await req.json();
     const { pdfText } = body;
 
-    const rawOutput = await convertTextToJsonOpenAI(pdfText);
+    const rawOutput = await convertTextToJsonLangChainAI(pdfText); // for langchain
 
-    // Step 1: Parse JSON safely
-    let parsed;
-    try {
-      const cleanedOutput = cleanLLMOutput(rawOutput.output_text);
-      parsed = JSON.parse(cleanedOutput);
-    } catch (err) {
-      return NextResponse.json({
-        error: "Invalid JSON from LLM",
-        rawOutput: rawOutput.output_text
-      }, { status: 500 });
-    }
-
-    // Step 2: Zod validation
-    const result = ResumeSchema.safeParse(parsed);
+    // Zod validation
+    const result = ResumeSchema.safeParse(rawOutput.structuredResponse); // for langchain
 
     if (!result.success) {
       return NextResponse.json({

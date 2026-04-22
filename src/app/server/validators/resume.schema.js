@@ -5,7 +5,7 @@ export const ResumeSchema = z.object({
 
   email: z.string().email(),
 
-  phone: z.array(z.string()).default([]).optional(),
+  phone: z.array(z.string()).default([]),
 
   skills: z.array(z.string()).default([]),
 
@@ -14,7 +14,7 @@ export const ResumeSchema = z.object({
       company: z.string(),
       role: z.string(),
       startDate: z.string(),
-      endDate: z.string().nullish(),
+      endDate: z.string().nullable(),
       description: z.string()
     })
   ).default([]),
