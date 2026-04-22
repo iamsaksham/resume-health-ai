@@ -1,24 +1,38 @@
 .root {
-  --rr-surface: #ffffff;
-  --rr-surface-2: #f9fafb;
-  --rr-border: #e5e7eb;
-  --rr-text: #111827;
-  --rr-text-secondary: #374151;
-  --rr-muted: #6b7280;
-  --rr-dim: #9ca3af;
-  --rr-shadow: 0 1px 2px rgba(0, 0, 0, 0.04), 0 4px 16px rgba(0, 0, 0, 0.06);
-  --rr-header-bg: rgba(255, 255, 255, 0.92);
-  --rr-tag-bg: #f3f4f6;
-  --rr-tag-border: #e5e7eb;
-  --rr-btn-bg: #111827;
-  --rr-btn-bg-hover: #1f2937;
-  --rr-btn-fg: #ffffff;
-  --rr-btn-border: rgba(17, 24, 39, 0.12);
+  --rr-surface: color-mix(in srgb, var(--void-panel) 94%, transparent);
+  --rr-surface-2: color-mix(in srgb, var(--void-elevated) 88%, transparent);
+  --rr-border: color-mix(in srgb, var(--fx-cyan) 22%, transparent);
+  --rr-border-soft: color-mix(in srgb, var(--fx-magenta) 14%, transparent);
+  --rr-text: var(--text-primary);
+  --rr-text-secondary: color-mix(in srgb, var(--text-primary) 88%, var(--fx-cyan));
+  --rr-muted: var(--text-muted);
+  --rr-dim: color-mix(in srgb, var(--text-muted) 85%, transparent);
+  --rr-shadow:
+    0 0 0 1px color-mix(in srgb, var(--fx-cyan) 10%, transparent),
+    0 12px 40px rgba(0, 0, 0, 0.5),
+    0 0 60px color-mix(in srgb, var(--fx-magenta) 8%, transparent);
+  --rr-header-bg: color-mix(in srgb, var(--void-elevated) 78%, transparent);
+  --rr-tag-bg: color-mix(in srgb, var(--fx-violet) 18%, var(--void-panel));
+  --rr-tag-border: color-mix(in srgb, var(--fx-cyan) 28%, transparent);
+  --rr-btn-bg: linear-gradient(
+    125deg,
+    color-mix(in srgb, var(--fx-cyan) 88%, #000),
+    color-mix(in srgb, var(--fx-violet) 75%, #000)
+  );
+  --rr-btn-bg-hover: linear-gradient(
+    125deg,
+    var(--fx-cyan),
+    color-mix(in srgb, var(--fx-magenta) 65%, var(--fx-cyan))
+  );
+  --rr-btn-fg: #041016;
+  --rr-btn-border: color-mix(in srgb, var(--fx-cyan) 45%, transparent);
 
+  position: relative;
+  z-index: 1;
   width: 100%;
   max-width: 1200px;
-  margin: 2rem auto 0;
-  padding: 0 1rem 2rem;
+  margin: 0 auto;
+  padding: 0 0 1rem;
   color: var(--rr-text);
   font-family: var(--font-geist-sans), system-ui, -apple-system, sans-serif;
 }
@@ -27,17 +41,21 @@
   display: grid;
   grid-template-columns: 1fr;
   gap: 1px;
-  background: var(--rr-border);
+  background: linear-gradient(
+    180deg,
+    color-mix(in srgb, var(--fx-cyan) 35%, transparent),
+    color-mix(in srgb, var(--fx-magenta) 28%, transparent)
+  );
   border: 1px solid var(--rr-border);
-  border-radius: 16px;
+  border-radius: 18px;
   overflow: hidden;
   box-shadow: var(--rr-shadow);
-  min-height: min(70vh, 720px);
+  min-height: min(72vh, 760px);
 }
 
 @media (min-width: 900px) {
   .shell {
-    grid-template-columns: minmax(0, 1fr) minmax(0, 1.15fr);
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.12fr);
   }
 }
 
@@ -51,6 +69,8 @@
 
 .panel {
   background: var(--rr-surface);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
 }
 
 .stickyHeader {
@@ -63,9 +83,15 @@
   gap: 1rem;
   flex-wrap: wrap;
   padding: 1rem 1.25rem;
-  background: var(--rr-header-bg);
-  backdrop-filter: blur(10px);
-  border-bottom: 1px solid var(--rr-border);
+  background: linear-gradient(
+    180deg,
+    color-mix(in srgb, var(--rr-header-bg) 95%, transparent),
+    color-mix(in srgb, var(--void-panel) 70%, transparent)
+  );
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border-bottom: 1px solid var(--rr-border-soft);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
 }
 
 .stickyHeaderLeft {
@@ -77,10 +103,12 @@
 
 .panelTitle {
   margin: 0;
-  font-size: 0.9375rem;
-  font-weight: 600;
-  letter-spacing: -0.01em;
-  color: var(--rr-text);
+  font-size: 0.8125rem;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: color-mix(in srgb, var(--fx-cyan) 55%, var(--text-primary));
+  text-shadow: 0 0 24px color-mix(in srgb, var(--fx-cyan) 35%, transparent);
 }
 
 .scrollRegion {
@@ -94,6 +122,68 @@
   padding: 1rem 1.25rem 1.5rem;
 }
 
+.leftStack {
+  display: flex;
+  flex-direction: column;
+  gap: 1.35rem;
+}
+
+.previewBlock {
+  flex-shrink: 0;
+}
+
+.textBlock {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.subSectionLabel {
+  margin: 0 0 0.55rem;
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: color-mix(in srgb, var(--fx-magenta) 58%, var(--text-muted));
+}
+
+.previewFrame {
+  border-radius: 12px;
+  overflow: hidden;
+  border: 1px solid var(--rr-border);
+  background: color-mix(in srgb, var(--void-base) 65%, transparent);
+  box-shadow:
+    inset 0 0 0 1px color-mix(in srgb, var(--fx-magenta) 12%, transparent),
+    0 12px 36px rgba(0, 0, 0, 0.4);
+  aspect-ratio: auto;
+  width: 100%;
+  min-height: min(72vh, 820px);
+  height: min(82vh, 960px);
+  max-height: min(88vh, 1020px);
+}
+
+.previewIframe {
+  width: 100%;
+  height: 100%;
+  min-height: min(72vh, 820px);
+  border: none;
+  display: block;
+  background: #120e1c;
+}
+
+@media (max-width: 899px) {
+  .previewFrame {
+    min-height: min(58vh, 560px);
+    height: min(62vh, 640px);
+    max-height: min(70vh, 720px);
+  }
+
+  .previewIframe {
+    min-height: min(58vh, 560px);
+  }
+}
+
 .rawTextarea {
   width: 100%;
   min-height: 280px;
@@ -101,19 +191,27 @@
   max-height: min(60vh, 560px);
   padding: 1rem 1.1rem;
   font-size: 0.8125rem;
-  line-height: 1.6;
+  line-height: 1.65;
   font-family: var(--font-geist-mono), ui-monospace, monospace;
-  color: var(--rr-text-secondary);
-  background: var(--rr-surface-2);
+  color: color-mix(in srgb, var(--fx-cyan) 22%, var(--text-primary));
+  background: color-mix(in srgb, var(--void-base) 65%, transparent);
   border: 1px solid var(--rr-border);
-  border-radius: 10px;
+  border-radius: 12px;
   resize: vertical;
-  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.03);
+  box-shadow:
+    inset 0 0 0 1px color-mix(in srgb, var(--fx-magenta) 8%, transparent),
+    inset 0 1px 24px rgba(0, 0, 0, 0.35);
 }
 
 .rawTextarea:focus {
-  outline: 2px solid rgba(59, 130, 246, 0.35);
-  outline-offset: 1px;
+  outline: 2px solid color-mix(in srgb, var(--fx-cyan) 45%, transparent);
+  outline-offset: 2px;
+}
+
+.textBlock .rawTextarea {
+  flex: 1;
+  min-height: 200px;
+  max-height: min(44vh, 480px);
 }
 
 .rawPlaceholder {
@@ -131,6 +229,6 @@
 
 @media (max-width: 899px) {
   .shell {
-    border-radius: 12px;
+    border-radius: 14px;
   }
 }

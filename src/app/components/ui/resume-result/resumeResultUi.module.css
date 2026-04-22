@@ -1,8 +1,14 @@
 .section {
-  background: var(--rr-surface);
-  border: 1px solid var(--rr-border);
-  border-radius: 12px;
-  box-shadow: var(--rr-shadow);
+  background: linear-gradient(
+    155deg,
+    color-mix(in srgb, var(--void-panel) 90%, transparent),
+    color-mix(in srgb, var(--fx-violet) 12%, transparent)
+  );
+  border: 1px solid color-mix(in srgb, var(--fx-cyan) 22%, transparent);
+  border-radius: 14px;
+  box-shadow:
+    0 0 0 1px color-mix(in srgb, var(--fx-magenta) 8%, transparent),
+    0 8px 28px rgba(0, 0, 0, 0.35);
   overflow: hidden;
 }
 
@@ -10,12 +16,25 @@
   padding: 1.25rem 1.35rem;
 }
 
+.sectionHeader {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 0.5rem 1rem;
+  margin-bottom: 1rem;
+}
+
 .sectionTitle {
-  margin: 0 0 1rem;
-  font-size: 0.8125rem;
-  font-weight: 600;
-  letter-spacing: 0.02em;
-  color: var(--rr-text);
+  margin: 0;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: color-mix(in srgb, var(--fx-magenta) 65%, var(--text-primary));
+  flex: 1 1 auto;
+  min-width: 0;
+  padding-top: 0.2rem;
 }
 
 .fieldGrid {
@@ -31,16 +50,16 @@
 }
 
 .fieldLabel {
-  font-size: 0.75rem;
-  font-weight: 500;
-  color: var(--rr-muted);
+  font-size: 0.7rem;
+  font-weight: 600;
+  color: color-mix(in srgb, var(--fx-cyan) 55%, var(--text-muted));
   text-transform: uppercase;
-  letter-spacing: 0.04em;
+  letter-spacing: 0.08em;
 }
 
 .fieldValue {
   font-size: 0.9375rem;
-  color: var(--rr-text);
+  color: var(--text-primary);
   line-height: 1.45;
   word-break: break-word;
 }
@@ -54,22 +73,170 @@
 .tag {
   display: inline-flex;
   align-items: center;
-  padding: 0.35rem 0.65rem;
+  padding: 0.35rem 0.7rem;
   font-size: 0.8125rem;
-  font-weight: 500;
-  color: var(--rr-text);
-  background: var(--rr-tag-bg);
-  border: 1px solid var(--rr-tag-border);
+  font-weight: 600;
   border-radius: 999px;
   line-height: 1.2;
+  border: 1px solid transparent;
+}
+
+/* K-pop / candy-pop palette — high saturation, neon glow */
+.tagBackend {
+  color: #1a0630;
+  background: linear-gradient(135deg, #d946ef 0%, #a855f7 55%, #7c3aed 100%);
+  border-color: #fce7f3;
+  box-shadow:
+    0 0 18px rgba(236, 72, 153, 0.55),
+    0 0 28px rgba(168, 85, 247, 0.35);
+}
+
+.tagFrontend {
+  color: #02202a;
+  background: linear-gradient(135deg, #22d3ee 0%, #38bdf8 45%, #818cf8 100%);
+  border-color: #ecfeff;
+  box-shadow:
+    0 0 18px rgba(34, 211, 238, 0.55),
+    0 0 26px rgba(129, 140, 248, 0.35);
+}
+
+.tagDevops {
+  color: #2b0a00;
+  background: linear-gradient(135deg, #ff9100 0%, #ff6b35 50%, #ff3d7f 100%);
+  border-color: #fff7ed;
+  box-shadow:
+    0 0 18px rgba(255, 145, 0, 0.55),
+    0 0 24px rgba(255, 61, 127, 0.35);
+}
+
+.tagCloud {
+  color: #f0f9ff;
+  background: linear-gradient(135deg, #3b82f6 0%, #6366f1 55%, #8b5cf6 100%);
+  border-color: #dbeafe;
+  box-shadow:
+    0 0 18px rgba(59, 130, 246, 0.55),
+    0 0 26px rgba(139, 92, 246, 0.35);
+}
+
+.tagData {
+  color: #fff0f7;
+  background: linear-gradient(135deg, #ff0080 0%, #ff4d9a 40%, #ff6bcb 100%);
+  border-color: #fce7f3;
+  box-shadow:
+    0 0 20px rgba(255, 0, 128, 0.55),
+    0 0 32px rgba(255, 77, 154, 0.4);
+}
+
+.tagMobile {
+  color: #0f1f05;
+  background: linear-gradient(135deg, #d4ff00 0%, #84cc16 50%, #22c55e 100%);
+  border-color: #ecfccb;
+  box-shadow:
+    0 0 18px rgba(212, 255, 0, 0.55),
+    0 0 24px rgba(34, 197, 94, 0.35);
+}
+
+.tagQa {
+  color: #1a1400;
+  background: linear-gradient(135deg, #fff200 0%, #fde047 45%, #fdba74 100%);
+  border-color: #fef9c3;
+  box-shadow:
+    0 0 18px rgba(255, 242, 0, 0.55),
+    0 0 24px rgba(253, 186, 116, 0.4);
+}
+
+.tagGeneral {
+  color: #3b0764;
+  background: linear-gradient(135deg, #fbcfe8 0%, #e9d5ff 50%, #c4b5fd 100%);
+  border-color: #faf5ff;
+  box-shadow:
+    0 0 16px rgba(244, 114, 182, 0.45),
+    0 0 22px rgba(196, 181, 253, 0.35);
+}
+
+.skillLegend {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 0.35rem 0.55rem;
+  max-width: min(22rem, 100%);
+}
+
+.skillLegendItem {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.28rem;
+}
+
+.skillLegendSwatch {
+  width: 0.5rem;
+  height: 0.5rem;
+  border-radius: 999px;
+  flex-shrink: 0;
+  border: 1px solid rgba(255, 255, 255, 0.22);
+}
+
+.skillLegendLabel {
+  font-size: 0.6rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  white-space: nowrap;
+}
+
+.legendSwatchBackend {
+  background: linear-gradient(135deg, #d946ef, #7c3aed);
+  box-shadow: 0 0 8px rgba(236, 72, 153, 0.65);
+}
+
+.legendSwatchFrontend {
+  background: linear-gradient(135deg, #22d3ee, #818cf8);
+  box-shadow: 0 0 8px rgba(34, 211, 238, 0.65);
+}
+
+.legendSwatchDevops {
+  background: linear-gradient(135deg, #ff9100, #ff3d7f);
+  box-shadow: 0 0 8px rgba(255, 145, 0, 0.65);
+}
+
+.legendSwatchCloud {
+  background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+  box-shadow: 0 0 8px rgba(59, 130, 246, 0.65);
+}
+
+.legendSwatchData {
+  background: linear-gradient(135deg, #ff0080, #ff6bcb);
+  box-shadow: 0 0 8px rgba(255, 0, 128, 0.7);
+}
+
+.legendSwatchMobile {
+  background: linear-gradient(135deg, #d4ff00, #22c55e);
+  box-shadow: 0 0 8px rgba(212, 255, 0, 0.65);
+}
+
+.legendSwatchQa {
+  background: linear-gradient(135deg, #fff200, #fdba74);
+  box-shadow: 0 0 8px rgba(255, 242, 0, 0.65);
+}
+
+.legendSwatchGeneral {
+  background: linear-gradient(135deg, #fbcfe8, #c4b5fd);
+  box-shadow: 0 0 8px rgba(244, 114, 182, 0.5);
 }
 
 .expCard {
   padding: 1rem 1.1rem;
-  background: var(--rr-surface-2);
-  border: 1px solid var(--rr-border);
-  border-radius: 10px;
-  box-shadow: 0 1px 0 rgba(0, 0, 0, 0.03);
+  background: color-mix(in srgb, var(--void-base) 55%, transparent);
+  border: 1px solid color-mix(in srgb, var(--fx-magenta) 18%, transparent);
+  border-radius: 12px;
+  box-shadow:
+    inset 0 1px 0 color-mix(in srgb, var(--fx-cyan) 10%, transparent),
+    0 6px 20px rgba(0, 0, 0, 0.3);
 }
 
 .expCard + .expCard {
@@ -79,29 +246,31 @@
 .expCompany {
   margin: 0;
   font-size: 0.9375rem;
-  font-weight: 600;
-  color: var(--rr-text);
+  font-weight: 700;
+  color: var(--text-primary);
+  letter-spacing: -0.01em;
 }
 
 .expRole {
   margin: 0.2rem 0 0;
   font-size: 0.875rem;
-  color: var(--rr-muted);
+  color: var(--text-muted);
 }
 
 .expDates {
   margin: 0.45rem 0 0;
   font-size: 0.75rem;
-  font-weight: 500;
-  color: var(--rr-dim);
-  letter-spacing: 0.02em;
+  font-weight: 600;
+  color: color-mix(in srgb, var(--fx-cyan) 45%, var(--text-muted));
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
 }
 
 .expDesc {
   margin: 0.75rem 0 0;
   font-size: 0.875rem;
   line-height: 1.55;
-  color: var(--rr-text-secondary);
+  color: color-mix(in srgb, var(--text-primary) 88%, var(--fx-cyan));
   white-space: pre-wrap;
 }
 
@@ -119,7 +288,7 @@
   flex-direction: column;
   gap: 0.15rem;
   padding: 0.65rem 0;
-  border-bottom: 1px solid var(--rr-border);
+  border-bottom: 1px solid color-mix(in srgb, var(--fx-cyan) 14%, transparent);
 }
 
 .eduItem:last-child {
@@ -129,25 +298,26 @@
 
 .eduInstitution {
   font-size: 0.9375rem;
-  font-weight: 600;
-  color: var(--rr-text);
+  font-weight: 700;
+  color: var(--text-primary);
 }
 
 .eduMeta {
   font-size: 0.8125rem;
-  color: var(--rr-muted);
+  color: var(--text-muted);
 }
 
 .eduYear {
   font-size: 0.75rem;
-  font-weight: 500;
-  color: var(--rr-dim);
+  font-weight: 600;
+  color: color-mix(in srgb, var(--fx-magenta) 45%, var(--text-muted));
   margin-top: 0.1rem;
+  letter-spacing: 0.04em;
 }
 
 .emptyHint {
   margin: 0;
   font-size: 0.875rem;
-  color: var(--rr-muted);
+  color: var(--text-muted);
   font-style: italic;
 }

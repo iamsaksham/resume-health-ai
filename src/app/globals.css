@@ -1,21 +1,32 @@
 :root {
-  /* Cosmic palette */
-  --deep-space: #1a0b2e;
-  --nebula: #3b1e5a;
-  --cosmic-blue: #1f3c88;
-  --magenta-glow: #c43eff;
-  --star-pink: #ff4da6;
+  /* Cosmic / legacy */
+  --deep-space: #0d0618;
+  --nebula: #2d0f4a;
+  --cosmic-blue: #153a7a;
+  --magenta-glow: #d946ef;
+  --star-pink: #fb7185;
 
-  --text-primary: #ede4f7;
-  --text-muted: rgba(237, 228, 247, 0.72);
+  /* Futuristic layer */
+  --void-base: #06040f;
+  --void-elevated: #0f0a1c;
+  --void-panel: #141022;
+  --fx-cyan: #22d3ee;
+  --fx-magenta: #e879f9;
+  --fx-violet: #8b5cf6;
+  --fx-grid: rgba(34, 211, 238, 0.06);
+  --fx-scan: rgba(232, 121, 249, 0.03);
 
-  --glass-border: rgba(255, 255, 255, 0.14);
-  --glass-border-strong: rgba(255, 255, 255, 0.22);
-  --glass-shine: rgba(255, 255, 255, 0.08);
-  --glass-bg: rgba(59, 30, 90, 0.35);
+  --text-primary: #f4f0ff;
+  --text-muted: rgba(244, 240, 255, 0.62);
 
-  /* Legacy names used by any defaults */
-  --background: var(--deep-space);
+  --glass-border: rgba(255, 255, 255, 0.1);
+  --glass-border-strong: rgba(34, 211, 238, 0.22);
+  --glass-shine: rgba(255, 255, 255, 0.06);
+  --glass-bg: rgba(20, 16, 34, 0.55);
+
+  --palette-pure-white: #ffffff;
+
+  --background: var(--void-base);
   --foreground: var(--text-primary);
 }
 
@@ -34,17 +45,48 @@ body {
   min-height: 100%;
   display: flex;
   flex-direction: column;
+  position: relative;
   color: var(--text-primary);
-  background-color: var(--deep-space);
+  background-color: var(--void-base);
   background-image:
-    radial-gradient(ellipse 100% 80% at 50% -30%, rgba(31, 60, 136, 0.45), transparent 55%),
-    radial-gradient(ellipse 70% 50% at 100% 20%, rgba(196, 62, 255, 0.14), transparent 50%),
-    radial-gradient(ellipse 55% 45% at 0% 90%, rgba(255, 77, 166, 0.1), transparent 45%),
-    radial-gradient(ellipse 80% 60% at 80% 100%, rgba(31, 60, 136, 0.2), transparent 50%);
+    radial-gradient(ellipse 120% 90% at 50% -40%, rgba(139, 92, 246, 0.35), transparent 50%),
+    radial-gradient(ellipse 80% 60% at 100% 0%, rgba(34, 211, 238, 0.12), transparent 45%),
+    radial-gradient(ellipse 70% 50% at 0% 100%, rgba(232, 121, 249, 0.14), transparent 42%),
+    radial-gradient(ellipse 60% 40% at 80% 100%, rgba(21, 58, 122, 0.35), transparent 50%);
   background-attachment: fixed;
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-geist-sans), system-ui, -apple-system, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  background-image:
+    linear-gradient(var(--fx-grid) 1px, transparent 1px),
+    linear-gradient(90deg, var(--fx-grid) 1px, transparent 1px);
+  background-size: 48px 48px;
+  mask-image: radial-gradient(ellipse 85% 70% at 50% 45%, black 15%, transparent 70%);
+  opacity: 0.85;
+}
+
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 2px,
+    var(--fx-scan) 2px,
+    var(--fx-scan) 3px
+  );
+  opacity: 0.5;
 }
 
 * {

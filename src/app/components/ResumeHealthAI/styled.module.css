@@ -4,20 +4,24 @@
   min-height: 100vh;
   min-height: 100dvh;
   position: relative;
+  z-index: 1;
   isolation: isolate;
 }
 
 .header {
   flex-shrink: 0;
-  border-bottom: 1px solid var(--glass-border);
+  border-bottom: 1px solid color-mix(in srgb, var(--fx-cyan) 22%, var(--glass-border));
   background: linear-gradient(
     180deg,
-    color-mix(in srgb, var(--nebula) 42%, transparent) 0%,
-    color-mix(in srgb, var(--deep-space) 55%, transparent) 100%
+    color-mix(in srgb, var(--void-elevated) 92%, transparent) 0%,
+    color-mix(in srgb, var(--nebula) 38%, transparent) 55%,
+    color-mix(in srgb, var(--void-base) 70%, transparent) 100%
   );
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.25);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  box-shadow:
+    0 4px 32px rgba(0, 0, 0, 0.4),
+    0 0 48px color-mix(in srgb, var(--fx-magenta) 10%, transparent);
 }
 
 .headerInner {
@@ -54,11 +58,19 @@
 .mainHeading {
   margin: 0;
   font-size: clamp(1.25rem, 3.2vw, 1.75rem);
-  font-weight: 700;
-  line-height: 1.2;
-  letter-spacing: -0.03em;
-  color: var(--text-primary);
-  text-shadow: 0 0 28px rgba(255, 77, 166, 0.15);
+  font-weight: 800;
+  line-height: 1.15;
+  letter-spacing: -0.04em;
+  background: linear-gradient(
+    110deg,
+    var(--text-primary) 0%,
+    color-mix(in srgb, var(--fx-cyan) 55%, var(--text-primary)) 42%,
+    color-mix(in srgb, var(--fx-magenta) 50%, var(--text-primary)) 100%
+  );
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  filter: drop-shadow(0 0 24px color-mix(in srgb, var(--fx-magenta) 25%, transparent));
 }
 
 .subHeading {
@@ -72,6 +84,33 @@
 
 .profileWrap {
   justify-self: end;
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+}
+
+.resultsLink {
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: color-mix(in srgb, var(--fx-cyan) 70%, var(--text-primary));
+  text-decoration: none;
+  padding: 0.45rem 0.65rem;
+  border-radius: 8px;
+  border: 1px solid color-mix(in srgb, var(--fx-cyan) 28%, transparent);
+  background: color-mix(in srgb, var(--fx-cyan) 8%, transparent);
+  box-shadow: 0 0 18px color-mix(in srgb, var(--fx-cyan) 12%, transparent);
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease,
+    color 0.2s ease;
+}
+
+.resultsLink:hover {
+  border-color: color-mix(in srgb, var(--fx-cyan) 48%, transparent);
+  color: var(--text-primary);
+  box-shadow: 0 0 26px color-mix(in srgb, var(--fx-cyan) 22%, transparent);
 }
 
 .profileMenu {
@@ -198,22 +237,23 @@
   justify-content: center;
   box-sizing: border-box;
   cursor: pointer;
-  border: 1px dashed color-mix(in srgb, var(--magenta-glow) 45%, var(--glass-border));
-  border-radius: 1rem;
+  border: 1px dashed color-mix(in srgb, var(--fx-cyan) 38%, var(--glass-border));
+  border-radius: 1.15rem;
   padding: 2.5rem 1.5rem;
   text-align: center;
   background: linear-gradient(
     155deg,
-    color-mix(in srgb, var(--nebula) 48%, transparent) 0%,
-    color-mix(in srgb, var(--cosmic-blue) 38%, transparent) 55%,
-    color-mix(in srgb, var(--deep-space) 20%, transparent) 100%
+    color-mix(in srgb, var(--void-panel) 72%, transparent) 0%,
+    color-mix(in srgb, var(--fx-violet) 22%, transparent) 48%,
+    color-mix(in srgb, var(--void-base) 55%, transparent) 100%
   );
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
+  backdrop-filter: blur(22px);
+  -webkit-backdrop-filter: blur(22px);
   box-shadow:
-    0 8px 32px rgba(0, 0, 0, 0.35),
+    0 8px 36px rgba(0, 0, 0, 0.45),
     inset 0 1px 0 var(--glass-shine),
-    0 0 60px rgba(31, 60, 136, 0.12);
+    0 0 0 1px color-mix(in srgb, var(--fx-magenta) 8%, transparent),
+    0 0 72px color-mix(in srgb, var(--fx-cyan) 14%, transparent);
   transition:
     border-color 0.2s ease,
     box-shadow 0.2s ease,
@@ -221,19 +261,19 @@
 }
 
 .dropzoneActive {
-  border-color: color-mix(in srgb, var(--star-pink) 65%, var(--magenta-glow));
+  border-color: color-mix(in srgb, var(--fx-magenta) 55%, var(--fx-cyan));
   border-style: solid;
   background: linear-gradient(
     155deg,
-    color-mix(in srgb, var(--nebula) 58%, transparent) 0%,
-    color-mix(in srgb, var(--cosmic-blue) 48%, transparent) 50%,
-    color-mix(in srgb, var(--magenta-glow) 22%, transparent) 100%
+    color-mix(in srgb, var(--void-panel) 65%, transparent) 0%,
+    color-mix(in srgb, var(--fx-violet) 35%, transparent) 45%,
+    color-mix(in srgb, var(--fx-magenta) 18%, transparent) 100%
   );
   box-shadow:
-    0 12px 40px rgba(0, 0, 0, 0.4),
+    0 12px 44px rgba(0, 0, 0, 0.5),
     inset 0 1px 0 var(--glass-shine),
-    0 0 32px rgba(196, 62, 255, 0.35),
-    0 0 56px rgba(255, 77, 166, 0.18);
+    0 0 40px color-mix(in srgb, var(--fx-cyan) 32%, transparent),
+    0 0 72px color-mix(in srgb, var(--fx-magenta) 22%, transparent);
 }
 
 .dropzoneBusy {

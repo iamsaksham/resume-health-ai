@@ -1,3 +1,7 @@
+import { useMemo } from "react";
+
+import { sortExperienceDescending } from "@/utils/sortExperienceDesc";
+
 import styles from "./resumeResultUi.module.css";
 
 function formatDates(startDate, endDate) {
@@ -8,13 +12,18 @@ function formatDates(startDate, endDate) {
 }
 
 export default function ExperienceList({ experience }) {
-  if (!Array.isArray(experience) || experience.length === 0) {
+  const ordered = useMemo(
+    () => sortExperienceDescending(experience),
+    [experience],
+  );
+
+  if (!Array.isArray(ordered) || ordered.length === 0) {
     return <p className={styles.emptyHint}>No experience entries.</p>;
   }
 
   return (
     <div>
-      {experience.map((job, index) => (
+      {ordered.map((job, index) => (
         <article
           key={`${job.company}-${job.role}-${index}`}
           className={styles.expCard}

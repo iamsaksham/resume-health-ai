@@ -1,15 +1,22 @@
 "use client";
 
 import Image from "next/image";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useRef, useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector, useStore } from "react-redux";
 
-import ResumeHealthResultView from "@/app/components/ResumeHealthResultView";
 import {
   clearResumeResult,
+  selectResumeParsedData,
+  selectResumePreviewIsPdf,
+  selectResumePreviewUrl,
+  selectResumeRawText,
   setResumeParsedData,
+  setResumePreview,
   setResumeRawText,
 } from "@/store/resumeSlice";
+import { withPdfViewerParams } from "@/utils/pdfPreviewParams";
 import styles from "./styled.module.css";
 
 const MAX_FILE_BYTES = 10 * 1024 * 1024;
@@ -68,10 +75,19 @@ function ProfileIcon() {
 }
 
 export default function ResumeHealthAI() {
+  const router = useRouter();
   const dispatch = useDispatch();
+  const store = useStore();
+  const resumeRawText = useSelector(selectResumeRawText);
+  const resumeParsedData = useSelector(selectResumeParsedData);
+  const pdfPreviewUrl = useSelector(selectResumePreviewUrl);
+  const pdfPreviewIsPdf = useSelector(selectResumePreviewIsPdf);
+  const hasStoredResult =
+    Boolean(resumeRawText?.trim()) ||
+    (resumeParsedData != null && typeof resumeParsedData === "object") ||
+    Boolean(pdfPreviewIsPdf && pdfPreviewUrl);
   const [dragActive, setDragActive] = useState(false);
   const [selectedFile, setSelectedFile] = useState(null);
-  const [pdfPreviewUrl, setPdfPreviewUrl] = useState(null);
   const [pickHint, setPickHint] = useState(null);
   const [uploadInProgress, setUploadInProgress] = useState(false);
 
@@ -79,16 +95,37 @@ export default function ResumeHealthAI() {
   const uploadTaskInProgressRef = useRef(false);
 
   useEffect(() => {
-    if (!selectedFile || !isPdfFile(selectedFile)) {
-      setPdfPreviewUrl(null);
+    if (!selectedFile) {
       return undefined;
     }
+    if (!isPdfFile(selectedFile)) {
+      const prevUrl = store.getState().resume.resumePreviewUrl;
+      if (prevUrl) {
+        URL.revokeObjectURL(prevUrl);
+      }
+      dispatch(
+        setResumePreview({
+          url: null,
+          fileName: selectedFile.name,
+          isPdf: false,
+        }),
+      );
+      return undefined;
+    }
+    const prevUrl = store.getState().resume.resumePreviewUrl;
+    if (prevUrl) {
+      URL.revokeObjectURL(prevUrl);
+    }
     const url = URL.createObjectURL(selectedFile);
-    setPdfPreviewUrl(url);
-    return () => {
-      URL.revokeObjectURL(url);
-    };
-  }, [selectedFile]);
+    dispatch(
+      setResumePreview({
+        url,
+        fileName: selectedFile.name,
+        isPdf: true,
+      }),
+    );
+    return undefined;
+  }, [selectedFile, dispatch, store]);
 
   useEffect(() => {
     if (uploadInProgress) setDragActive(false);
@@ -140,16 +177,21 @@ export default function ResumeHealthAI() {
     dispatch(setResumeRawText(typeof pdfText === "string" ? pdfText : ""));
     const pdfJson = await handleTextToJsonAI(pdfText);
     dispatch(setResumeParsedData(pdfJson ?? null));
-  }, [dispatch, handlePdfToTextAPI, handleTextToJsonAI]);
+    router.push("/results");
+  }, [dispatch, handlePdfToTextAPI, handleTextToJsonAI, router]);
 
   const clearSelectedFile = useCallback(() => {
+    const prevUrl = store.getState().resume.resumePreviewUrl;
+    if (prevUrl) {
+      URL.revokeObjectURL(prevUrl);
+    }
     setSelectedFile(null);
     setPickHint(null);
     dispatch(clearResumeResult());
     if (fileInputRef.current) {
       fileInputRef.current.value = "";
     }
-  }, [dispatch]);
+  }, [dispatch, store]);
 
   const openFilePicker = useCallback(() => {
     fileInputRef.current?.click();
@@ -241,6 +283,11 @@ export default function ResumeHealthAI() {
             </p>
           </div>
           <div className={styles.profileWrap}>
+            {hasStoredResult ? (
+              <Link href="/results" className={styles.resultsLink}>
+                Analysis
+              </Link>
+            ) : null}
             <details className={styles.profileMenu}>
               <summary className={styles.profileSummary} aria-label="Account menu">
                 <ProfileIcon />
@@ -280,9 +327,9 @@ export default function ResumeHealthAI() {
               <>
                 <div className={styles.filePreview}>
                   <div className={styles.filePreviewThumb}>
-                    {pdfPreviewUrl ? (
+                    {pdfPreviewIsPdf && pdfPreviewUrl ? (
                       <iframe
-                        src={`${pdfPreviewUrl}#toolbar=0&navpanes=0`}
+                        src={withPdfViewerParams(pdfPreviewUrl)}
                         className={styles.filePreviewIframe}
                         title={`Preview of ${selectedFile.name}`}
                       />
@@ -346,7 +393,6 @@ export default function ResumeHealthAI() {
               "Upload resume"
             )}
           </button>
-          <ResumeHealthResultView />
         </div>
       </main>
 
