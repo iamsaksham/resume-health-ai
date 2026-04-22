@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useSelector } from "react-redux";
 
+import { SiteFooter, SiteHeader } from "@/app/components/SiteChrome";
 import ResumeHealthResultView from "@/app/components/ResumeHealthResultView";
 import {
   selectResumeParsedData,
@@ -27,16 +28,7 @@ export default function ResultsRoute() {
 
   return (
     <div className={styles.page}>
-      <header className={styles.topBar}>
-        <Link href="/" className={styles.backLink}>
-          <span className={styles.backChevron} aria-hidden>
-            ←
-          </span>
-          Upload
-        </Link>
-        <span className={styles.topTitle}>Analysis</span>
-        <span className={styles.topSpacer} aria-hidden />
-      </header>
+      <SiteHeader hasStoredResult={hasData} />
 
       <main className={styles.main}>
         {!hasData ? (
@@ -54,6 +46,8 @@ export default function ResultsRoute() {
           <ResumeHealthResultView />
         )}
       </main>
+
+      <SiteFooter />
     </div>
   );
 }

@@ -1,11 +1,10 @@
 "use client";
 
-import Image from "next/image";
-import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector, useStore } from "react-redux";
 
+import { SiteFooter, SiteHeader } from "@/app/components/SiteChrome";
 import {
   clearResumeResult,
   selectResumeParsedData,
@@ -58,17 +57,6 @@ function DocPreviewIcon() {
         fill="currentColor"
         fillOpacity="0.45"
         d="M14 32h20v2H14v-2zm0-6h20v2H14v-2zm0-6h14v2H14v-2z"
-      />
-    </svg>
-  );
-}
-
-function ProfileIcon() {
-  return (
-    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-      <path
-        d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"
-        fill="currentColor"
       />
     </svg>
   );
@@ -264,46 +252,7 @@ export default function ResumeHealthAI() {
 
   return (
     <div className={styles.page}>
-      <header className={styles.header}>
-        <div className={styles.headerInner}>
-          <div className={styles.logo}>
-            <Image
-              src="/rhai-logo.png"
-              alt="Resume Health AI"
-              width={160}
-              height={80}
-              priority
-              style={{ height: 80, width: "auto" }}
-            />
-          </div>
-          <div className={styles.titleBlock}>
-            <h1 className={styles.mainHeading}>Resume Health AI</h1>
-            <p className={styles.subHeading}>
-              🤖 Validated by AI. ✨ Structured with precision
-            </p>
-          </div>
-          <div className={styles.profileWrap}>
-            {hasStoredResult ? (
-              <Link href="/results" className={styles.resultsLink}>
-                Analysis
-              </Link>
-            ) : null}
-            <details className={styles.profileMenu}>
-              <summary className={styles.profileSummary} aria-label="Account menu">
-                <ProfileIcon />
-              </summary>
-              <div className={styles.profilePanel} role="menu">
-                <button type="button" className={styles.profileItem} role="menuitem">
-                  Profile
-                </button>
-                <button type="button" className={styles.profileItem} role="menuitem">
-                  Logout
-                </button>
-              </div>
-            </details>
-          </div>
-        </div>
-      </header>
+      <SiteHeader hasStoredResult={hasStoredResult} />
 
       <main className={styles.main}>
         <div className={styles.bodyContent}>
@@ -396,15 +345,7 @@ export default function ResumeHealthAI() {
         </div>
       </main>
 
-      <footer className={styles.attribution}>
-        <p className={styles.attributionText}>
-          Made with{" "}
-          <span className={styles.heart} aria-label="love">
-            ❤️
-          </span>{" "}
-          by iamsaksham
-        </p>
-      </footer>
+      <SiteFooter />
     </div>
   );
 }
