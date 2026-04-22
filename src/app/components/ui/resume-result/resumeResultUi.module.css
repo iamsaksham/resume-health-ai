@@ -1,0 +1,153 @@
+.section {
+  background: var(--rr-surface);
+  border: 1px solid var(--rr-border);
+  border-radius: 12px;
+  box-shadow: var(--rr-shadow);
+  overflow: hidden;
+}
+
+.sectionBody {
+  padding: 1.25rem 1.35rem;
+}
+
+.sectionTitle {
+  margin: 0 0 1rem;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  color: var(--rr-text);
+}
+
+.fieldGrid {
+  display: grid;
+  gap: 0.85rem 1.25rem;
+}
+
+@media (min-width: 480px) {
+  .fieldGrid {
+    grid-template-columns: 7rem 1fr;
+    align-items: baseline;
+  }
+}
+
+.fieldLabel {
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: var(--rr-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.fieldValue {
+  font-size: 0.9375rem;
+  color: var(--rr-text);
+  line-height: 1.45;
+  word-break: break-word;
+}
+
+.tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.tag {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.35rem 0.65rem;
+  font-size: 0.8125rem;
+  font-weight: 500;
+  color: var(--rr-text);
+  background: var(--rr-tag-bg);
+  border: 1px solid var(--rr-tag-border);
+  border-radius: 999px;
+  line-height: 1.2;
+}
+
+.expCard {
+  padding: 1rem 1.1rem;
+  background: var(--rr-surface-2);
+  border: 1px solid var(--rr-border);
+  border-radius: 10px;
+  box-shadow: 0 1px 0 rgba(0, 0, 0, 0.03);
+}
+
+.expCard + .expCard {
+  margin-top: 0.75rem;
+}
+
+.expCompany {
+  margin: 0;
+  font-size: 0.9375rem;
+  font-weight: 600;
+  color: var(--rr-text);
+}
+
+.expRole {
+  margin: 0.2rem 0 0;
+  font-size: 0.875rem;
+  color: var(--rr-muted);
+}
+
+.expDates {
+  margin: 0.45rem 0 0;
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: var(--rr-dim);
+  letter-spacing: 0.02em;
+}
+
+.expDesc {
+  margin: 0.75rem 0 0;
+  font-size: 0.875rem;
+  line-height: 1.55;
+  color: var(--rr-text-secondary);
+  white-space: pre-wrap;
+}
+
+.eduList {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+}
+
+.eduItem {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+  padding: 0.65rem 0;
+  border-bottom: 1px solid var(--rr-border);
+}
+
+.eduItem:last-child {
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+.eduInstitution {
+  font-size: 0.9375rem;
+  font-weight: 600;
+  color: var(--rr-text);
+}
+
+.eduMeta {
+  font-size: 0.8125rem;
+  color: var(--rr-muted);
+}
+
+.eduYear {
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: var(--rr-dim);
+  margin-top: 0.1rem;
+}
+
+.emptyHint {
+  margin: 0;
+  font-size: 0.875rem;
+  color: var(--rr-muted);
+  font-style: italic;
+}

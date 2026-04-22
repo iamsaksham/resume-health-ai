@@ -2,6 +2,14 @@
 
 import Image from "next/image";
 import { useCallback, useEffect, useRef, useState } from "react";
+import { useDispatch } from "react-redux";
+
+import ResumeHealthResultView from "@/app/components/ResumeHealthResultView";
+import {
+  clearResumeResult,
+  setResumeParsedData,
+  setResumeRawText,
+} from "@/store/resumeSlice";
 import styles from "./styled.module.css";
 
 const MAX_FILE_BYTES = 10 * 1024 * 1024;
@@ -60,11 +68,13 @@ function ProfileIcon() {
 }
 
 export default function ResumeHealthAI() {
+  const dispatch = useDispatch();
   const [dragActive, setDragActive] = useState(false);
   const [selectedFile, setSelectedFile] = useState(null);
   const [pdfPreviewUrl, setPdfPreviewUrl] = useState(null);
   const [pickHint, setPickHint] = useState(null);
   const [uploadInProgress, setUploadInProgress] = useState(false);
+
   const fileInputRef = useRef(null);
   const uploadTaskInProgressRef = useRef(false);
 
@@ -127,18 +137,19 @@ export default function ResumeHealthAI() {
 
   const handleUploadResume = useCallback(async () => {
     const pdfText = await handlePdfToTextAPI();
-    console.log('--> ', pdfText);
+    dispatch(setResumeRawText(typeof pdfText === "string" ? pdfText : ""));
     const pdfJson = await handleTextToJsonAI(pdfText);
-    console.log('--> ', pdfJson);
-  }, [handlePdfToTextAPI, handleTextToJsonAI]);
+    dispatch(setResumeParsedData(pdfJson ?? null));
+  }, [dispatch, handlePdfToTextAPI, handleTextToJsonAI]);
 
   const clearSelectedFile = useCallback(() => {
     setSelectedFile(null);
     setPickHint(null);
+    dispatch(clearResumeResult());
     if (fileInputRef.current) {
       fileInputRef.current.value = "";
     }
-  }, []);
+  }, [dispatch]);
 
   const openFilePicker = useCallback(() => {
     fileInputRef.current?.click();
@@ -335,6 +346,7 @@ export default function ResumeHealthAI() {
               "Upload resume"
             )}
           </button>
+          <ResumeHealthResultView />
         </div>
       </main>
 
