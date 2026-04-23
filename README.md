@@ -1,36 +1,54 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Resume Health AI
 
-## Getting Started
+A Next.js app that ingests a resume file, extracts text on the server, and uses an OpenAI model (via LangChain) to turn that text into structured, validated JSON you can review and download.
 
-First, run the development server:
+## Features
+
+- **Upload experience**: Drag-and-drop or “Browse files” on the home page. The UI accepts **PDF** up to **10 MB**, with optional in-browser **PDF preview** before analysis.
+- **Text extraction**: Pdf text is extracted to be used in further stages.
+- **Structured parsing**: Used **LangChain** agent using **gpt-4o-mini**, with output constrained to a **Zod** schema.
+- **Results view**: After upload, you are taken to a layout that can show **document preview** (PDFs), **read-only extracted text**, and **structured sections** (basic info, skills with categorization UI, experience, education), plus a **Download JSON** action for the parsed object.
+- **State**: Parsed data and preview metadata are held in **Redux** for the current session.
+
+## Requirements
+
+- **Node.js**: Use a current LTS release compatible with **Next.js 16** (for example **Node.js 20.x**). Older majors may not be supported.
+- **npm** (or another client that respects `package-lock.json` if you use one).
+- An **OpenAI API key** with access to models you configure in code (the app uses **`gpt-4o-mini`** for structured extraction).
+
+## Environment variables
+
+Create a file named **`.env.local`** in the **project root** (same folder as `package.json`). Next.js loads this automatically in development and production builds on your machine; the repo’s `.gitignore` ignores `.env*` so secrets are not committed.
+
+Minimal example:
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+# Required for AI-powered resume → JSON (LangChain / OpenAI)
+OPENAI_API_KEY=sk-...
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Notes:
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
+- **`OPENAI_API_KEY`** is what the LangChain client expects by default and is required for the main upload → JSON flow.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
 
-## Learn More
+After changing env vars, **restart** the dev server (`npm run dev`) so Next.js picks them up.
 
-To learn more about Next.js, take a look at the following resources:
+## How to run
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+From the project root:
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+```bash
+npm install
+npm run dev
+```
 
-## Deploy on Vercel
+Then open **http://localhost:3000** in a browser, upload a resume, and use **Upload resume** to run extraction and structured parsing. When finished, you’ll land on **`/results`**.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+Other scripts:
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+```bash
+npm run build   # production build
+npm run start   # run production server (after build)
+npm run lint    # ESLint
+```
